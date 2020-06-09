@@ -18,7 +18,11 @@ gem 'jbuilder', '~> 2.7'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
+gem "rotp", require: false
+gem "rqrcode", require: false
+gem "rodauth", "~> 2.0", require: false
 gem 'rodauth-rails'
+gem 'jwt'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

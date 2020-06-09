@@ -1,0 +1,17 @@
+<%= rodauth.authenticated_by.inspect %>
+<ul>
+  <% if rodauth.authenticated? %>
+    <li><%= link_to "Sign out", rodauth.logout_path, method: :post %></li>
+    <li><%= link_to "Remember settings", rodauth.remember_path %></li>
+    <li><%= link_to "2factor", rodauth.two_factor_manage_path %></li>
+    <li><%= link_to 'change login', rodauth.change_login_path  %></li>
+    <li><%= link_to 'change password', rodauth.change_password_path  %></li>
+    <li><%= link_to 'close account', rodauth.close_account_path %></li>
+    <li><%= link_to 'Email Auth', rodauth.email_auth_path %></li>
+    <li><%= link_to "Sms code", rodauth.sms_setup_path  %></li>
+  <% else %>
+    <li><%= link_to "Sign in", rodauth.otp_auth_path %></li>
+    <li><%= link_to "Sms code", rodauth.sms_auth_path  %></li>
+    <li><%= link_to "Sign up", rodauth.create_account_path %></li>
+  <% end %>
+</ul>
