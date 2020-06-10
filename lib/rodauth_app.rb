@@ -119,7 +119,7 @@ class RodauthApp < Rodauth::Rails::App
     extend_remember_deadline? true
 
     # Consider remembered users to be multifactor-authenticated (if using MFA).
-    # after_load_memory { two_factor_update_session("totp") if two_factor_authentication_setup? }
+    after_load_memory { two_factor_update_session("totp") if two_factor_authentication_setup? }
 
     # ==> Hooks
     # Validate custom fields in the create account form.
@@ -178,16 +178,35 @@ class RodauthApp < Rodauth::Rails::App
 
   route do |r|
     rodauth.load_memory # autologin remembered users
-    r.rodauth # route rodauth requests
-    # if rodauth.logged_in? && rodauth.two_factor_authentication_setup? &&  !rodauth.two_factor_authenticated?
-    #   rodauth.require_two_factor_authenticated
-    # end
 
-    Rails.logger.info '  -- rodauth.sms_locked_out?'
-    Rails.logger.info rodauth.sms_locked_out?.inspect
-    if rodauth.logged_in? && rodauth.sms_setup? && !rodauth.two_factor_authenticated?
-      rodauth.require_sms_available
+    r.rodauth # route rodauth requests
+
+    if rodauth.logged_in?
+      Rails.logger.info '  -- rodauth.logged_in?'
+      Rails.logger.info rodauth.logged_in?.inspect
+
+      Rails.logger.info '  -- rodauth.two_factor_authentication_setup?'
+      Rails.logger.info rodauth.two_factor_authentication_setup?.inspect
+
+      Rails.logger.info '  -- rodauth.two_factor_authenticated?'
+      Rails.logger.info (rodauth.two_factor_authenticated?).inspect
+
+      Rails.logger.info '  -- (rodauth.logged_in? && rodauth.two_factor_authentication_setup? && !rodauth.two_factor_authenticated?)'
+      Rails.logger.info (rodauth.logged_in? && rodauth.two_factor_authentication_setup? && !rodauth.two_factor_authenticated?).inspect
+
+      Rails.logger.info '  -- rodauth.authenticated_by'
+      Rails.logger.info rodauth.authenticated_by.inspect
     end
+
+    if rodauth.logged_in? && rodauth.two_factor_authentication_setup? && !rodauth.two_factor_authenticated?
+      rodauth.require_two_factor_authenticated
+    end
+
+
+
+
+    Rails.logger.info '  -- rodauth.authenticated_by'
+    Rails.logger.info rodauth.authenticated_by.inspect
 
     # ==> Authenticating Requests
     # Call `rodauth.require_authentication` for requests that you want to

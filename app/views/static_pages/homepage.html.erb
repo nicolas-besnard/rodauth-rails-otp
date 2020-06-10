@@ -1,6 +1,7 @@
 <%= rodauth.authenticated_by.inspect %>
 <ul>
   <% if rodauth.authenticated? %>
+    <%= current_account.email %>
     <li><%= link_to "Sign out", rodauth.logout_path, method: :post %></li>
     <li><%= link_to "Remember settings", rodauth.remember_path %></li>
     <li><%= link_to "2factor", rodauth.two_factor_manage_path %></li>

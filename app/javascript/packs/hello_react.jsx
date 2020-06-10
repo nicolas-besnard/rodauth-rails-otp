@@ -4,23 +4,39 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
 
-const Hello = props => (
-  <div>Hello {props.name}!</div>
-)
+const Hello = () => {
+  const changeLogin = () => {
+    fetch('/change-login?login=foo@foo.fr&password=plopplop', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(console.log)
+  }
 
-Hello.defaultProps = {
-  name: 'David'
-}
+  const getPosts = () => {
+    fetch('/posts', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(console.log)
+  }
 
-Hello.propTypes = {
-  name: PropTypes.string
+  return (
+    <>
+      <button onClick={getPosts}>Get Post</button>
+      <button onClick={changeLogin}>Change Login</button>
+    </>
+  )
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Hello name="React" />,
+    <Hello />,
     document.body.appendChild(document.createElement('div')),
   )
 })
